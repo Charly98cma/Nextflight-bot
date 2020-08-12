@@ -1,0 +1,2 @@
+python-telegram-bot
+git+git://github.com/Plutoberth/python-launch-library
