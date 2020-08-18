@@ -19,17 +19,22 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 # Processing commands
 def start_Command(update, context):
-    welcome_message = 'Hello there :D\n' + \
-        'I can help you keep track of the next rocket launch.\n\n' + \
-        '**Commands to control me:c**\n' +\
-        '*/help* - Display the list of commands\n' +\
-        '*/next* - Information about next lauch\n' +\
-        '*/cancel* - Ends the conversation'
-    update.message.reply_text(welcome_message, parse_mode=ParseMode.MARKDOWN)
+    welcome_msg = "Hello there!\n" + \
+        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + \
+        "<b>Commands to control me:</b>\n" +\
+        "/help - Display the list of commands\n" +\
+        "/next - Information about next lauch\n" +\
+        "/cancel - Ends the conversation"
+    update.message.reply_text(welcome_msg, parse_mode=ParseMode.HTML)
 
     
 def help_Command(update, context):
-    h = "WIP"
+    # Gives the user the list of commands
+    help_msg = "<b>Commands to control me:</b>\n" +\
+        "/help - Display the list of commands\n" +\
+        "/next - Information about next lauch\n" +\
+        "/cancel - Ends the conversation"
+    update.message.reply_text(help_msg, parse_mode=ParseMode.HTML)
 
     
 def nextflight_Command(update, context):
@@ -38,6 +43,7 @@ def nextflight_Command(update, context):
 
 def cancel_Command(update, context):
     h = "WIP"
+
 
 
 
