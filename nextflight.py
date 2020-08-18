@@ -13,42 +13,59 @@ from datetime import datetime
 import os
 
 
-# Processing commands
-def startCommand(bot, update):
-    welcome_message = "Hola :D"
-    context.bot.send_message(chat_id = update.message.chat.id, text = welcome_message, parse_mode = ParseMode.MARKDOWN)
-
-
-def helpCommand(bot, update):
-    h = "WIP"
-
-def nextflightCommand(bot, update):
-    h = "WIP"
-
-# Connection with the bot
-# FIXME: use_context should be removed once python-telegram-bot 
-updater = Updater(os.environ.get('NF_TOKEN'), use_context=True)
-dp = updater.dispatcher
-
-# Useful configuration for debuging
+# Useful for debuging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# Initializing API connection (retries is optional)
-api = ll.Api()
 
-# Handlers for commands
-dp.add_handler(CommandHandler('start', startCommand))
-dp.add_handler(CommandHandler('help', helpCommand))
-dp.add_handler(CommandHandler('nextflight', nextflightCommand))
+# Processing commands
+def start_Command(update, context):
+    welcome_message = 'Hello there :D\n' + \
+        'I can help you keep track of the next rocket launch.\n\n' + \
+        '**Commands to control me:c**\n' +\
+        '*/help* - Display the list of commands\n' +\
+        '*/next* - Information about next lauch\n' +\
+        '*/cancel* - Ends the conversation'
+    update.message.reply_text(welcome_message, parse_mode=ParseMode.MARKDOWN)
 
-# Getting starter for Updates
-updater.start_polling(clean = True)
+    
+def help_Command(update, context):
+    h = "WIP"
+
+    
+def nextflight_Command(update, context):
+    h = "WIP"
 
 
-# Stop the bot if Ctrl+C is pressed
-updater.idle()
+def cancel_Command(update, context):
+    h = "WIP"
 
 
+
+    
+def main():
+    # Connection with the bot
+    # FIXME: use_context should be removed once python-telegram-bot v13 is released on pip
+    updater = Updater(os.environ.get('NF_TOKEN'), use_context=True)
+    
+    # Dispatcher to register handlers
+    dp = updater.dispatcher
+    
+    # Initializing Launchlibrary API connection
+    api = ll.Api()
+    
+    # Handlers for commands
+    dp.add_handler(CommandHandler('start', start_Command))
+    dp.add_handler(CommandHandler('help', help_Command))
+    dp.add_handler(CommandHandler('nextflight', nextflight_Command))
+    dp.add_handler(CommandHandler('cancel', cancel_Command))
+    
+    # Getting starter for Updates
+    updater.start_polling(clean = True)
+    updater.idle()
+
+
+if __name__ == '__main__':
+    main()
 
 
 
