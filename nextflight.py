@@ -43,7 +43,7 @@ def help_Command(update, context):
 
     
 def nextflight_Command(update, context):
-    # API request to retrive the next space flight
+    # API request to retrieve the next space flight
     offset = 0
     # Loop to search the next launch
     # REASON: the API returns the most recent launch even if it has already happend
