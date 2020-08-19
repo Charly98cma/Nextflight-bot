@@ -42,11 +42,18 @@ def help_Command(update, context):
     
 def nextflight_Command(update, context):
     # API request to retrive the next space flight
-    response = requests.get(URL+"/launch", params={"limit" : 1}).json()
-    results = response["results"][0]
+    offset = 0
+    # Loop to search the next launch
+    # REASON: the API gives you the most recent launch even if it has already happend
+    while True:
+        response = requests.get(URL+"/launch/upcoming/", params={"limit" : 1, "offset" : offset}).json()
+        results = response["results"][0]
+        if (results["status"]["name"] not in ["Success", "Failed"]):
+            break
+        offset+=1
+        
     name = results["name"]
-    
-    #update.message.reply_text(results["name"], parse_mode=ParseMode.HTML)
+    update.message.reply_text(name, parse_mode=ParseMode.HTML)
 
 
 def cancel_Command(update, context):
