@@ -16,15 +16,16 @@ import os
 # Useful for debuging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# Basic URL of the API
+# Basic URL of Launch Library API
 URL = "https://ll.thespacedevs.com/2.0.0"
 
 
 # Processing commands
 def start_Command(update, context):
-    welcome_msg = "Hello there!\n" + \
-        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + \
+    welcome_msg = "Hello there!\n" +\
+        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" +\
         "<b>Commands to control me:</b>\n" +\
+        "/start - Start the conversation with me" +\
         "/help - Display the list of commands\n" +\
         "/next - Information about next lauch\n" +\
         "/cancel - Ends the conversation"
@@ -34,6 +35,7 @@ def start_Command(update, context):
 def help_Command(update, context):
     # Gives the user the list of commands
     help_msg = "<b>Commands to control me:</b>\n" +\
+        "/start - Start the conversation with me" +\
         "/help - Display the list of commands\n" +\
         "/next - Information about next lauch\n" +\
         "/cancel - Ends the conversation"
@@ -57,34 +59,40 @@ def nextflight_Command(update, context):
     # win_open
     # win_close
 
+    # Mission description
     try:
         mission_desc = results["mission"]["description"]
     except:
         mission_desc = "<i>No description given</i>"
 
+    # Abbreviation of mission orbit
     try:
         mission_orbit = results["mission"]["orbit"]["abbrev"]
     except:
         mission_orbit = "<i>Unknown orbit</i>"
 
+    # Mission type
     try:
         mission_type = results["mission"]["type"]
     except:
         mission_type = "<i>Unknown mission type</i>"
 
+    # Launch location
     try:
         location = results["pad"]["location"]["name"]
     except:
         location = "<i>Unknown location</i>"
 
+    # Launch pad
     try:
         pad = results["pad"]["name"]
     except:
         pad = "<i>Unknown launch pad</i>"
-        
+
+    # Full message to the user
     next_msg = "<b>" + name + "</b>\n" +\
         mission_desc + "\n\n" +\
-        mission_orbit + " - " + mission_type + "\n" +\
+        mission_orbit + " - " + mission_type + "\n\n" +\
         pad + " - " + location
     update.message.reply_text(next_msg, parse_mode=ParseMode.HTML)
 
