@@ -1,6 +1,6 @@
 # TELEGRAM LIBRARIES
 from telegram import Update, ParseMode
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, MessageHandler
 
 # HTTP Requests
 import requests
@@ -22,12 +22,12 @@ URL = "https://ll.thespacedevs.com/2.0.0"
 
 # Processing commands
 def start_Command(update, context):
-    welcome_msg = "Hello there!\n" +\
+    welcome_msg = "Hello there!\n\n" +\
         "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" +\
         "<b>Commands to control me:</b>\n" +\
-        "/start - Start the conversation with me" +\
+        "/start - Start the conversation with me\n" +\
         "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch\n" +\
+        "/next - Information about next lauch(some info might be classified)\n" +\
         "/cancel - Ends the conversation"
     update.message.reply_text(welcome_msg, parse_mode=ParseMode.HTML)
 
@@ -35,9 +35,9 @@ def start_Command(update, context):
 def help_Command(update, context):
     # Gives the user the list of commands
     help_msg = "<b>Commands to control me:</b>\n" +\
-        "/start - Start the conversation with me" +\
+        "/start - Start the conversation with me\n" +\
         "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch\n" +\
+        "/next - Information about next lauch (some info might be classified)\n" +\
         "/cancel - Ends the conversation"
     update.message.reply_text(help_msg, parse_mode=ParseMode.HTML)
 
@@ -45,19 +45,28 @@ def help_Command(update, context):
 def nextflight_Command(update, context):
     # API request to retrieve the next space flight
     offset = 0
-    # Loop to search the next launch
-    # REASON: the API returns the most recent launch even if it has already happend
+    # Loop to search the next launch because the API returns the most recent launch even if it has already happend
     while True:
-        response = requests.get(URL+"/launch/upcoming/", params={"limit" : 1, "offset" : offset}).json()
+        # mode can be "normal", "list", "detailed"
+        response = requests.get(URL+"/launch/upcoming/", params={"limit" : 1, "offset" : offset, "mode" : "detailed"}).json()
         results = response["results"][0]
         if (results["status"]["name"] not in ["Success", "Failed"]):
             break
         offset+=1
-        
+
+    # Name of rocker and payload
     name = results["name"]
-    # net
-    # win_open
-    # win_close
+
+    # TODO: Check if net, win_start, win_end could be null (Chinese gov give very little info)
+
+    # Estimated launch date and time
+    net = datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+
+    # Launch window start
+    win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+
+    # Launch window end
+    win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
 
     # Mission description
     try:
@@ -89,16 +98,25 @@ def nextflight_Command(update, context):
     except:
         pad = "<i>Unknown launch pad</i>"
 
+
+    # TODO: Add URLs to streams, if there is no stream photo of rocket
+
+    # TODO: Ask if user wants infographic (see how to implement it)
+        
     # Full message to the user
-    next_msg = "<b>" + name + "</b>\n" +\
+    next_msg = "<b>" + name + "</b>\n\n" +\
+        "<i>NET</i>: " + net + "\n" +\
+        "<i>Win.Start</i>: " + win_start + "\n" +\
+        "<i>Win.Close</i>: " + win_end + "\n\n" +\
         mission_desc + "\n\n" +\
-        mission_orbit + " - " + mission_type + "\n\n" +\
+        mission_orbit + " - " + mission_type + "\n" +\
         pad + " - " + location
     update.message.reply_text(next_msg, parse_mode=ParseMode.HTML)
 
 
-def cancel_Command(update, context):
-    h = "WIP"
+def unknown_Command(update, context):
+    update.message.reply_text("Sorry, I didn't understand that command.")
+
 
 
     
@@ -114,7 +132,7 @@ def main():
     dp.add_handler(CommandHandler('start', start_Command))
     dp.add_handler(CommandHandler('help', help_Command))
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
-    dp.add_handler(CommandHandler('cancel', cancel_Command))
+    dp.add_handler(MessageHandler(Filters.command, unknown_Command))
     
     # Getting starter for Updates
     updater.start_polling(clean = True)
