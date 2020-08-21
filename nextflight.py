@@ -34,6 +34,8 @@ def start_Command(update, context):
         
     update.message.reply_text(welcome_msg, parse_mode=ParseMode.HTML)
 
+    # TODO: Ask timezone for dates (if user rejects, use UTC)
+
     
 def help_Command(update, context):
     # Gives the user the list of commands
@@ -124,6 +126,7 @@ def nextflight_Command(update, context):
 
     
     # TODO: Ask if user wants infographic (see how to implement it)
+    # update.message.reply_photo(...)
         
 
 def unknown_Command(update, context):
