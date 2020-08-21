@@ -23,7 +23,7 @@ URL = "https://ll.thespacedevs.com/2.0.0"
 commands_msg = "<b>Commands to control me:</b>\n" +\
         "/start - Start the conversation with me\n" +\
         "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch (some info might be classified)\n" +\
+        "/next - Information about next lauch\n" +\
         "/cancel - Ends the conversation"
 
 
@@ -103,9 +103,8 @@ def nextflight_Command(update, context):
     except:
         pad = "<i>Unknown launch pad</i>"
 
-    # TODO: Add URLs to streams, if there is no stream, photo of rocket
         
-    # Full message to the user
+    # Message for the user
     next_msg = "<b>" + name + "</b>\n\n" +\
         "NET: " + net + "\n" +\
         "Wind.Open: " + win_start + "\n" +\
@@ -113,6 +112,14 @@ def nextflight_Command(update, context):
         mission_desc + "\n\n" +\
         mission_orbit + " - " + mission_type + "\n" +\
         pad + " - " + location
+
+    # URL of the streaming
+    try:
+        vidURL = results["vidURLs"][0]["url"]
+        next_msg += "\n" + vidURL
+    except:
+        pass
+
     update.message.reply_text(next_msg, parse_mode=ParseMode.HTML)
 
     
