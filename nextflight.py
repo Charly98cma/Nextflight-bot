@@ -19,27 +19,25 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 # Basic URL of Launch Library API
 URL = "https://ll.thespacedevs.com/2.0.0"
 
+# String with all the commands
+commands_msg = "<b>Commands to control me:</b>\n" +\
+        "/start - Start the conversation with me\n" +\
+        "/help - Display the list of commands\n" +\
+        "/next - Information about next lauch (some info might be classified)\n" +\
+        "/cancel - Ends the conversation"
+
 
 # Processing commands
 def start_Command(update, context):
     welcome_msg = "Hello there!\n\n" +\
-        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" +\
-        "<b>Commands to control me:</b>\n" +\
-        "/start - Start the conversation with me\n" +\
-        "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch(some info might be classified)\n" +\
-        "/cancel - Ends the conversation"
+        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg
+        
     update.message.reply_text(welcome_msg, parse_mode=ParseMode.HTML)
 
     
 def help_Command(update, context):
     # Gives the user the list of commands
-    help_msg = "<b>Commands to control me:</b>\n" +\
-        "/start - Start the conversation with me\n" +\
-        "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch (some info might be classified)\n" +\
-        "/cancel - Ends the conversation"
-    update.message.reply_text(help_msg, parse_mode=ParseMode.HTML)
+    update.message.reply_text(commands_msg, parse_mode=ParseMode.HTML)
 
     
 def nextflight_Command(update, context):
@@ -57,16 +55,23 @@ def nextflight_Command(update, context):
     # Name of rocker and payload
     name = results["name"]
 
-    # TODO: Check if net, win_start, win_end could be null (Chinese gov give very little info)
-
     # Estimated launch date and time
-    net = datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
-
+    try:
+        net = datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+    except:
+        net = "<i>Unknown launch date and time </i>"
+        
     # Launch window start
-    win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+    try:
+        win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+    except:
+        win_start = "<i>Unknown wind. open date and time </i>"
 
     # Launch window end
-    win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+    try:    
+        win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
+    except:
+        win_start = "<i>Unknown wind. close date and time </i>"
 
     # Mission description
     try:
@@ -98,21 +103,21 @@ def nextflight_Command(update, context):
     except:
         pad = "<i>Unknown launch pad</i>"
 
-
-    # TODO: Add URLs to streams, if there is no stream photo of rocket
-
-    # TODO: Ask if user wants infographic (see how to implement it)
+    # TODO: Add URLs to streams, if there is no stream, photo of rocket
         
     # Full message to the user
     next_msg = "<b>" + name + "</b>\n\n" +\
-        "<i>NET</i>: " + net + "\n" +\
-        "<i>Win.Start</i>: " + win_start + "\n" +\
-        "<i>Win.Close</i>: " + win_end + "\n\n" +\
+        "NET: " + net + "\n" +\
+        "Wind.Open: " + win_start + "\n" +\
+        "Wind.Close: " + win_end + "\n\n" +\
         mission_desc + "\n\n" +\
         mission_orbit + " - " + mission_type + "\n" +\
         pad + " - " + location
     update.message.reply_text(next_msg, parse_mode=ParseMode.HTML)
 
+    
+    # TODO: Ask if user wants infographic (see how to implement it)
+        
 
 def unknown_Command(update, context):
     update.message.reply_text("Sorry, I didn't understand that command.")
