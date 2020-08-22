@@ -14,7 +14,9 @@ import os
 
 
 # Useful for debuging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Basic URL of Launch Library API
@@ -30,19 +32,28 @@ commands_msg = "<b>Commands to control me:</b>\n" +\
 
 # Processing commands
 def start_Command(update, context):
-    welcome_msg = "Hello there!\n\n" +\
-        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg
-        
-    update.message.reply_text(welcome_msg, parse_mode=ParseMode.HTML)
+    welcome_msg =
+
+    update.message.reply_text(
+        "Hello there!\n\n" +\
+        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg,
+        parse_mode=ParseMode.HTML)
+
+    # update.message.reply_text(
+    #     "I need to know your <b>timezone</b> so I can give you the right dates and times.\n" +\
+    #     "If you prefer not to, the dates and times will be in <b>UTC</b>.",
+    #     parse_mode=ParseMode.HTML)
 
     # TODO: Ask timezone for dates (if user rejects, use UTC)
 
-    
+
 def help_Command(update, context):
     # Gives the user the list of commands
-    update.message.reply_text(commands_msg, parse_mode=ParseMode.HTML)
+    update.message.reply_text(
+        commands_msg,
+        parse_mode=ParseMode.HTML)
 
-    
+
 def nextflight_Command(update, context):
     # API request to retrieve the next space flight
     offset = 0
@@ -63,7 +74,7 @@ def nextflight_Command(update, context):
         net = datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
     except:
         net = "<i>Unknown launch date and time </i>"
-        
+
     # Launch window start
     try:
         win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
@@ -71,7 +82,7 @@ def nextflight_Command(update, context):
         win_start = "<i>Unknown wind. open date and time </i>"
 
     # Launch window end
-    try:    
+    try:
         win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
     except:
         win_start = "<i>Unknown wind. close date and time </i>"
@@ -106,7 +117,6 @@ def nextflight_Command(update, context):
     except:
         pad = "<i>Unknown launch pad</i>"
 
-        
     # Message for the user
     next_msg = "<b>" + name + "</b>\n\n" +\
         "NET: " + net + "\n" +\
@@ -118,8 +128,7 @@ def nextflight_Command(update, context):
 
     # URL of the streaming
     try:
-        vidURL = results["vidURLs"][0]["url"]
-        next_msg += "\n" + vidURL
+        next_msg += "\n" + results["vidURLs"][0]["url"]
     except:
         pass
 
@@ -130,7 +139,10 @@ def nextflight_Command(update, context):
         photo = results["image"]
 
     # Send the message with the available photo and the caption
-    update.message.reply_photo(photo, next_msg, parse_mode=ParseMode.HTML)
+    update.message.reply_photo(
+        photo,
+        next_msg,
+        parse_mode=ParseMode.HTML)
 
 
 def unknown_Command(update, context):
@@ -138,21 +150,21 @@ def unknown_Command(update, context):
 
 
 
-    
+
 def main():
     # Connection with the bot (the first argument is your token)
     # FIXME: use_context should be removed once python-telegram-bot v13 is released on pip
     updater = Updater(os.environ.get('NF_TOKEN'), use_context=True)
-    
+
     # Dispatcher to register handlers
     dp = updater.dispatcher
-    
+
     # Handlers for commands
     dp.add_handler(CommandHandler('start', start_Command))
     dp.add_handler(CommandHandler('help', help_Command))
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
     dp.add_handler(MessageHandler(Filters.command, unknown_Command))
-    
+
     # Getting starter for Updates
     updater.start_polling(clean = True)
     updater.idle()
@@ -160,4 +172,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
