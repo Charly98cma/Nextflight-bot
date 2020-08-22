@@ -15,6 +15,7 @@ import os
 
 # Useful for debuging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Basic URL of Launch Library API
 URL = "https://ll.thespacedevs.com/2.0.0"
@@ -122,12 +123,15 @@ def nextflight_Command(update, context):
     except:
         pass
 
-    update.message.reply_text(next_msg, parse_mode=ParseMode.HTML)
+    update.message.reply_photo(results["image"] , next_msg, parse_mode=ParseMode.HTML)
 
     
-    # TODO: Ask if user wants infographic (see how to implement it)
-    # update.message.reply_photo(...)
-        
+    # TODO: Ask if user wants infographic
+    # try:
+    #     update.message.reply_photo(photo=results["infographics"])
+    # except:
+    #     pass
+
 
 def unknown_Command(update, context):
     update.message.reply_text("Sorry, I didn't understand that command.")
@@ -156,7 +160,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
 
