@@ -123,14 +123,14 @@ def nextflight_Command(update, context):
     except:
         pass
 
-    update.message.reply_photo(results["image"] , next_msg, parse_mode=ParseMode.HTML)
+    # Infographic if there is one, otherwise, the image off the rocket
+    try:
+        photo = results["infographic"]
+    except:
+        photo = results["image"]
 
-    
-    # TODO: Ask if user wants infographic
-    # try:
-    #     update.message.reply_photo(photo=results["infographics"])
-    # except:
-    #     pass
+    # Send the message with the available photo and the caption
+    update.message.reply_photo(photo, next_msg, parse_mode=ParseMode.HTML)
 
 
 def unknown_Command(update, context):
