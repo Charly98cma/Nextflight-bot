@@ -1,8 +1,28 @@
 # Nextflight_bot
-
 ## Basic info
 
-## Dependencies
+Hey there :D
+
+I've made this bot to solve a problem I only had, but, hey, maybe someone else have it too, thats why I decided to make it public.
+
+I'm already working on it and looking for a place to host it (maybe AWS), but at the moment, it's only working while I'm testing, but it will be ready pretty soon.
+
+This is a pretty basic bot with the following commands:
+- **\start** - Self-explanatory
+- **\help**  - Gives the list of commands and a brief explanation
+- **\nextflight** - Answers with the info of the next space flight (name, dates, description, location, etc..) and photo of the rocket or the infographic if it's available.
+- ...
+
+The very basic are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...)
+
+See the [TODO](github.com/Charly98cma/Nextflight-bot/blob/master/README.md#TODO) section to see the roadmap of this project.
+
+Hope you like it and it's helpful to someone else  ;)
+
+If you want to give it a taste, once it's released, he's wating [here](t.me/nextflight_bot).
+
+## Dependencies and execution
+
 This bots uses mainly 2 packages, **python-telegram-bot** and **requests**, both of them are available on *pip*.
 
 Both packages can be installed by executing the next command, which gives the `requirements.txt` to *pip* and does his installation process:
@@ -15,5 +35,19 @@ And... you're almost ready to take off :P
 
 ## Credentials
 
+To create yout bot, you must talk to the BotFather, which will guide you through the basics of setting up your bot, and will give you the token.
+
+Once everything is set up, create a new environment variable called *NF_TOKEN* with your token, and execute the bot.
+
 ## Acknowledgements
 
+Thanks to the original developer of [Launch Library](launchlibrary.net/), the original API, and the awesome [developers](https://thespacedevs.com/about) of [The Space Devs](thespacedevs.com/) for improving the project and making [Launch Librari 2](https://thespacedevs.com/llapi).
+
+---
+
+## TODO
+- [ ] Dates and times in user timezone, not in UTC.
+- [ ] Reminder 30 mins before launch.
+- [ ] ...
+- [ ] **Release first stable version**
+- [ ] Events (dock/undock of capsules, EVAs, etc...)
