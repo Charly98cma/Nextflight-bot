@@ -1,16 +1,17 @@
-# TELEGRAM LIBRARIES
+#!/usr/bin/env python
+
+# Telegram libraries
 from telegram import Update, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, MessageHandler
 
 # HTTP Requests
 import requests
 
-# USEFUL LIBRARIES
+# Useful libraries
+import datetime
 import logging
-from datetime import datetime
-
-# ENVIROMENT VARIABLES
 import os
+import sys
 
 
 # Useful for debuging
@@ -26,27 +27,16 @@ URL = "https://ll.thespacedevs.com/2.0.0"
 commands_msg = "<b>Commands to control me:</b>\n" +\
         "/start - Start the conversation with me\n" +\
         "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch\n" +\
-        "/cancel - Ends the conversation"
-
+        "/next - Information about next lauch\n"
 
 # Processing commands
 def start_Command(update, context):
-    welcome_msg =
-
     update.message.reply_text(
         "Hello there!\n\n" +\
         "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg,
         parse_mode=ParseMode.HTML)
 
-    # update.message.reply_text(
-    #     "I need to know your <b>timezone</b> so I can give you the right dates and times.\n" +\
-    #     "If you prefer not to, the dates and times will be in <b>UTC</b>.",
-    #     parse_mode=ParseMode.HTML)
-
-    # TODO: Ask timezone for dates (if user rejects, use UTC)
-
-
+    
 def help_Command(update, context):
     # Gives the user the list of commands
     update.message.reply_text(
@@ -150,25 +140,27 @@ def unknown_Command(update, context):
 
 
 
-
 def main():
-    # Connection with the bot (the first argument is your token)
-    # FIXME: use_context should be removed once python-telegram-bot v13 is released on pip
+    
+    if 'NF_TOKEN' not in os.environ:
+        print("Environment variable 'NF_TOKEN' not defined.", file=sys.stderr)
+        exit(1)
+    
+    # FIXME: "use_context=True" should be removed once python-telegram-bot v13 is released on pip
     updater = Updater(os.environ.get('NF_TOKEN'), use_context=True)
 
     # Dispatcher to register handlers
     dp = updater.dispatcher
 
-    # Handlers for commands
+    # Handlers
     dp.add_handler(CommandHandler('start', start_Command))
     dp.add_handler(CommandHandler('help', help_Command))
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
     dp.add_handler(MessageHandler(Filters.command, unknown_Command))
 
-    # Getting starter for Updates
+    # Starts the bot
     updater.start_polling(clean = True)
     updater.idle()
-
 
 if __name__ == '__main__':
     main()
