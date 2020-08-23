@@ -15,7 +15,7 @@ This is a pretty basic bot with the following commands:
 
 The very basic are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...)
 
-See the [TODO](https://github.com/Charly98cma/Nextflight-bot/edit/master/README.md#TODO) section to see the roadmap of this project.
+See the [TODO](https://github.com/Charly98cma/Nextflight-bot/master/README.md#TODO) section to see the roadmap of this project.
 
 Hope you like it and it's helpful to someone else  ;)
 
