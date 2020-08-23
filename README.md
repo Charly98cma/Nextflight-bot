@@ -46,6 +46,7 @@ Thanks to the original developer of [Launch Library](launchlibrary.net/), the or
 ---
 
 ## TODO
+- [ ] Chnge description, commands and about me on BotFather
 - [ ] Dates and times in user timezone, not in UTC.
 - [ ] Reminder 30 mins before launch.
 - [ ] ...
