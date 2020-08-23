@@ -15,11 +15,11 @@ This is a pretty basic bot with the following commands:
 
 The very basic are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...)
 
-See the [TODO](github.com/Charly98cma/Nextflight-bot/blob/master/README.md#TODO) section to see the roadmap of this project.
+See the [TODO](https://github.com/Charly98cma/Nextflight-bot/edit/master/README.md#TODO) section to see the roadmap of this project.
 
 Hope you like it and it's helpful to someone else  ;)
 
-If you want to give it a taste, once it's released, he's wating [here](t.me/nextflight_bot).
+If you want to give it a taste, once it's released, he's wating [here](https://t.me/nextflight_bot).
 
 ## Dependencies and execution
 
@@ -41,12 +41,12 @@ Once everything is set up, create a new environment variable called *NF_TOKEN* w
 
 ## Acknowledgements
 
-Thanks to the original developer of [Launch Library](launchlibrary.net/), the original API, and the awesome [developers](https://thespacedevs.com/about) of [The Space Devs](thespacedevs.com/) for improving the project and making [Launch Librari 2](https://thespacedevs.com/llapi).
+Thanks to the original developer of [Launch Library](https://launchlibrary.net/), the original API, and the awesome [developers](https://thespacedevs.com/about) of [The Space Devs](https://thespacedevs.com/) for improving the project and making [Launch Librari 2](https://thespacedevs.com/llapi).
 
 ---
 
 ## TODO
-- [ ] Chnge description, commands and about me on BotFather
+- [ ] Change ~description~, commands and ~about me~ on BotFather
 - [ ] Dates and times in user timezone, not in UTC.
 - [ ] Reminder 30 mins before launch.
 - [ ] ...
