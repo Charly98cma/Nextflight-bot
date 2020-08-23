@@ -126,13 +126,18 @@ def nextflight_Command(update, context):
     try:
         photo = results["infographic"]
     except:
-        photo = results["image"]
-
-    # Send the message with the available photo and the caption
-    update.message.reply_photo(
-        photo,
-        next_msg,
-        parse_mode=ParseMode.HTML)
+        try:
+            # Message with the available photo and the caption
+            photo = results["image"]
+            update.message.reply_photo(
+                photo,
+                next_msg,
+                parse_mode=ParseMode.HTML)
+        except:
+            # Mssage without photo since it is not available
+            update.message.reply_text(
+                next_msg,
+                parse_mode=ParseMode.HTML)
 
 
 def unknown_Command(update, context):
