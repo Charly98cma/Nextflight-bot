@@ -50,5 +50,6 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [X] **Release first stable version**
 - [ ] Reminder 30 mins before launch.
 - [ ] Dates and times in user timezone, not in UTC.
+- [ ] Make a docker image
 - [ ] ...
 - [ ] Events (dock/undock of capsules, EVAs, etc...)
