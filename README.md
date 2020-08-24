@@ -46,9 +46,9 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 ---
 
 ## TODO
-- [ ] Change ~description~, commands and ~about me~ on BotFather
-- [ ] Dates and times in user timezone, not in UTC.
+- [x] Change description, commands and about me on BotFather
 - [ ] Reminder 30 mins before launch.
+- [ ] Dates and times in user timezone, not in UTC.
 - [ ] ...
 - [ ] **Release first stable version**
 - [ ] Events (dock/undock of capsules, EVAs, etc...)

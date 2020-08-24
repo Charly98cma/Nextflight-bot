@@ -122,7 +122,7 @@ def nextflight_Command(update, context):
     except:
         pass
 
-    # Infographic if there is one, otherwise, the image off the rocket
+    # Infographic if there is one, otherwise, the image of the rocket
     try:
         photo = results["infographic"]
     except:
@@ -134,7 +134,7 @@ def nextflight_Command(update, context):
                 next_msg,
                 parse_mode=ParseMode.HTML)
         except:
-            # Mssage without photo since it is not available
+            # Message without photo since it is not available
             update.message.reply_text(
                 next_msg,
                 parse_mode=ParseMode.HTML)
