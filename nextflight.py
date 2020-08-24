@@ -34,14 +34,16 @@ def start_Command(update, context):
     update.message.reply_text(
         "Hello there!\n\n" +\
         "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg,
-        parse_mode=ParseMode.HTML)
+        parse_mode=ParseMode.HTML
+    )
 
     
 def help_Command(update, context):
     # Gives the user the list of commands
     update.message.reply_text(
         commands_msg,
-        parse_mode=ParseMode.HTML)
+        parse_mode=ParseMode.HTML
+    )
 
 
 def nextflight_Command(update, context):
@@ -132,12 +134,14 @@ def nextflight_Command(update, context):
             update.message.reply_photo(
                 photo,
                 next_msg,
-                parse_mode=ParseMode.HTML)
+                parse_mode=ParseMode.HTML
+            )
         except:
             # Message without photo since it is not available
             update.message.reply_text(
                 next_msg,
-                parse_mode=ParseMode.HTML)
+                parse_mode=ParseMode.HTML
+            )
 
 
 def unknown_Command(update, context):
