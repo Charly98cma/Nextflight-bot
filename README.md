@@ -41,14 +41,14 @@ Once everything is set up, create a new environment variable called *NF_TOKEN* w
 
 ## Acknowledgements
 
-Thanks to the original developer of [Launch Library](https://launchlibrary.net/), the original API, and the awesome [developers](https://thespacedevs.com/about) of [The Space Devs](https://thespacedevs.com/) for improving the project and making [Launch Librari 2](https://thespacedevs.com/llapi).
+Thanks to the original developer of [Launch Library](https://launchlibrary.net/), the original API, and the awesome [developers](https://thespacedevs.com/about) of [The Space Devs](https://thespacedevs.com/) for improving the project and making [Launch Library 2](https://thespacedevs.com/llapi).
 
 ---
 
 ## TODO
 - [x] Change description, commands and about me on BotFather
 - [X] **Release first stable version**
-- [ ] Reminder 30 mins before launch.
+- [X] ~Reminder 30 mins before launch.~ -> DROPPED
 - [ ] Dates and times in user timezone, not in UTC.
 - [ ] ...
 - [ ] Events (dock/undock of capsules, EVAs, etc...)
