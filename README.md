@@ -51,8 +51,8 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Dates and times in user timezone, not in UTC using user location.
 - [x] Bugs, fixes and typos
 - [x] New **/cancel** command
-- [ ] Create *dev* branch and keep *master* as Stable version.
-- [ ] Move messages out of the main code
+- [X] Create *dev* branch and keep *master* as Stable version.
+- [X] Move messages out of the main code
 - [ ] Restructure the project to make it "professional" (unload the only .py file)
 - [ ] Translate texts to user language
 - [ ] **Release second stable version**
