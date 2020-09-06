@@ -152,6 +152,12 @@ def unknown_Command(update, context):
     update.message.reply_text("Sorry, I didn't understand that command.")
 
 
+def cancel_Command(update, context):
+    logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
+    update.message.reply_text("Bye! Hope we talk again soon")
+    return ConversationHandler.END
+
+
 
 def main():
     
