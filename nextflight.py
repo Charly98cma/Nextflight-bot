@@ -16,6 +16,10 @@ import sys
 # Timezonefinder (coordinates --> TZ)
 from timezonefinder import TimezoneFinder
 
+# Messages and texts send to the user
+import messages as msgs
+
+
 # Useful for debuging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -28,14 +32,7 @@ URL = "https://ll.thespacedevs.com/2.0.0"
 # Timezonefinder object
 tf = TimezoneFinder()
 
-# String with all the commands
-commands_msg = "<b>Commands to control me:</b>\n" +\
-        "/start - Start the conversation with me\n" +\
-        "/help - Display the list of commands\n" +\
-        "/next - Information about next lauch\n" +\
-        "/cancel - Ends the conversation"
-
-LOCATION, HELP, NEXT= range(3)
+LOCATION = range(1)
 
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC']
@@ -44,13 +41,11 @@ userTZ = ['UTC']
 def start_Command(update, context):
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
     update.message.reply_text(
-        text = "Hello there!\n\n" +\
-        "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg,
+        text = msgs.welcome_msg,
         parse_mode=ParseMode.HTML
     )
     update.message.reply_text(
-        text = "But first, send me <b>your location</b> please, it's only used to give you the dates and times on your timezone.\n" +\
-        "Use <b>/skip</b> if you dont want to give me your location.",
+        text = msgs.location_msg,
         parse_mode=ParseMode.HTML
     )
     return LOCATION
@@ -68,7 +63,7 @@ def location(update, context):
 def skip_location(update, context):
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     update.message.reply_text(
-        text = "Okey, dates and times will be <b>UTC</b> from now on.",
+        text = msgs.skip_location_msg,
         parse_mode=ParseMode.HTML
     )
 
@@ -76,7 +71,7 @@ def skip_location(update, context):
 def help_Command(update, context):
     logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
     update.message.reply_text(
-        commands_msg,
+        msgs.commands_msg,
         parse_mode=ParseMode.HTML
     )
 
@@ -186,24 +181,17 @@ def nextflight_Command(update, context):
             )
 
 
-def cancel_Command(update, context):
-    update.message.reply_text(
-        text = 'Bye! Has been a pleasure, hope we talk again soon!'
-    )
-    return ConversationHandler.END
-
-
 def unknown_Command(update, context):
     logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
     update.message.reply_text(
-        text = "Sorry, I didn't understand that command."
+        text = msgs.unknown_msg
     )
 
 
 def cancel_Command(update, context):
     logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
     update.message.reply_text(
-        "Bye! Hope we talk again soon :D"
+        text = msgs.cancel_msg
     )
     return ConversationHandler.END
 
