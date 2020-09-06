@@ -31,6 +31,7 @@ commands_msg = "<b>Commands to control me:</b>\n" +\
 
 # Processing commands
 def start_Command(update, context):
+    logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
     update.message.reply_text(
         "Hello there!\n\n" +\
         "I can help you keep track of the next rocket launch, you just need to ask :D\n\n" + commands_msg,
@@ -40,6 +41,7 @@ def start_Command(update, context):
     
 def help_Command(update, context):
     # Gives the user the list of commands
+    logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
     update.message.reply_text(
         commands_msg,
         parse_mode=ParseMode.HTML
@@ -47,6 +49,7 @@ def help_Command(update, context):
 
 
 def nextflight_Command(update, context):
+    logger.info('User {} request next space flight info'.format(update.message.from_user.first_name))
     # API request to retrieve the next space flight
     offset = 0
     # Loop to search the next launch because the API returns the most recent launch even if it has already happend
@@ -58,7 +61,7 @@ def nextflight_Command(update, context):
             break
         offset+=1
 
-    # Name of rocker and payload
+    # Name of rocket and payload
     name = results["name"]
 
     # Estimated launch date and time
@@ -71,19 +74,19 @@ def nextflight_Command(update, context):
     try:
         win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
     except:
-        win_start = "<i>Unknown wind. open date and time </i>"
+        win_start = "<i>Unknown window open date and time </i>"
 
     # Launch window end
     try:
         win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y %m %d - %H:%M:%S UTC")
     except:
-        win_start = "<i>Unknown wind. close date and time </i>"
+        win_start = "<i>Unknown window close date and time </i>"
 
     # Mission description
     try:
         mission_desc = results["mission"]["description"]
     except:
-        mission_desc = "<i>No description given</i>"
+        mission_desc = "<i>Unknown description</i>"
 
     # Abbreviation of mission orbit
     try:
@@ -145,6 +148,7 @@ def nextflight_Command(update, context):
 
 
 def unknown_Command(update, context):
+    logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
     update.message.reply_text("Sorry, I didn't understand that command.")
 
 
