@@ -208,6 +208,12 @@ def cancel_Command(update, context):
     return ConversationHandler.END
 
 
+def cancel_Command(update, context):
+    logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
+    update.message.reply_text("Bye! Hope we talk again soon")
+    return ConversationHandler.END
+
+
 
 def main():
     
