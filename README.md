@@ -32,6 +32,12 @@ make init
 
 And... you're almost ready to take off :P
 
+To run the bot, just execute:
+
+```
+make run
+```
+
 ## Credentials
 
 To create yout bot, you must talk to the BotFather, which will guide you through the basics of setting up your bot, and will give you the token.
@@ -52,7 +58,8 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] New **/cancel** command
 - [X] Create *dev* branch and keep *master* as Stable version.
 - [X] Move messages out of the main code
-- [ ] Restructure the project to make it "professional" (unload the only .py file)
+- [x] Add GPL License
+- [x] Restructure the project to make it "professional" (unload the only .py file)
 - [ ] Translate texts to user language
 - [ ] **Release second stable version**
 - [ ] Reminder 30 mins before launch.
