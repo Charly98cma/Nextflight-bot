@@ -25,10 +25,9 @@ If you want to give it a taste, once it's released, he's wating [here](https://t
 
 This bot uses a couple of packages which are available on *pip*, see [requirements.txt](https://github.com/Charly98cma/Nextflight-bot/blob/master/requirements.txt) to see all of them.
 
-All the packages can be installed by executing the next command, which gives the `requirements.txt` to *pip* and does his installation process:
-
+The installation process of all the required packages has been changed to even more simple commands using the next command:
 ```
-pip install -r requirements.txt
+make init
 ```
 
 And... you're almost ready to take off :P
