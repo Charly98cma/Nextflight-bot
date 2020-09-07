@@ -29,8 +29,6 @@ LOCATION = range(1)
 
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC', pytz.utc]
-# Flag for location already set 
-locFlag = False
 
 def start_Command(update, context):
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
@@ -86,7 +84,7 @@ def nextflight_Command(update, context):
 
     next_msg, photo = next_Command(userTZ)
     
-    if photo is None:
+    if photo is not None:
         # Message with photo or infographic
         update.message.reply_photo(
             photo,
@@ -145,7 +143,10 @@ def main():
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
     dp.add_handler(CommandHandler('cancel', cancel_Command))
     dp.add_handler(MessageHandler(Filters.command, unknown_Command))
-    
+
+    # Flag for location already set 
+    locFlag = False
+
     
     # Starts the bot
     updater.start_polling(clean = True)
