@@ -4,11 +4,7 @@
 from telegram import Update, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-# HTTP Requests
-import requests
-
 # Useful libraries
-import datetime
 import logging
 import os
 import sys
@@ -18,7 +14,7 @@ from timezonefinder import TimezoneFinder
 
 # Messages and texts send to the user
 import messages as msgs
-
+from flight_info import next_Command
 
 # Useful for debuging
 logging.basicConfig(
@@ -35,18 +31,19 @@ tf = TimezoneFinder()
 LOCATION = range(1)
 
 # List to save the TZ of the user (UTC by default)
-userTZ = ['UTC']
-
+userTZ = ['UTC', pytz.utc]
+# Flag for location already set 
+locFlag = False
 
 def start_Command(update, context):
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
     update.message.reply_text(
         text = msgs.welcome_msg,
-        parse_mode=ParseMode.HTML
+        parse_mode = ParseMode.HTML
     )
     update.message.reply_text(
         text = msgs.location_msg,
-        parse_mode=ParseMode.HTML
+        parse_mode = ParseMode.HTML
     )
     return LOCATION
 
@@ -57,128 +54,54 @@ def location(update, context):
         lng = location["longitude"],
         lat = location["latitude"]
     )
+    userTZ[1] = pytz.timezone(
+        userTZ[0]
+    )
+    locFlag = True
+    update.message.reply_text(
+        text = msgs.timezone_msg + userTZ[0],
+        parse_mode = ParseMode.HTML
+    )
     logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, userTZ[0]))
 
 
 def skip_location(update, context):
+    if locFlag:
+        pass
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     update.message.reply_text(
         text = msgs.skip_location_msg,
-        parse_mode=ParseMode.HTML
+        parse_mode = ParseMode.HTML
     )
+    locFlag = True
 
 
 def help_Command(update, context):
     logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
     update.message.reply_text(
         msgs.commands_msg,
-        parse_mode=ParseMode.HTML
+        parse_mode = ParseMode.HTML
     )
 
 
 def nextflight_Command(update, context):
     logger.info('User {} request next space flight info'.format(update.message.from_user.first_name))
-    # API request to retrieve the next space flight
-    offset = 0
-    # Loop to search the next launch because the API returns the most recent launch even if it has already happend
-    while True:
-        # mode can be "normal", "list", "detailed"
-        results = requests.get(URL+"/launch/upcoming/", params={"limit" : 1, "offset" : offset, "mode" : "detailed"}).json()["results"][0]
-        if (results["status"]["name"] not in ["Success", "Failed"]):
-            break
-        offset+=1
 
-    # Name of rocket and payload
-    name = results["name"]
-
-    # Estimated launch date and time
-    # REVIEW: Check the TZ works properly
-    try:
-        net = datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ").astimezone(userTZ[0]).strftime("%Y %m %d - %H:%M:%S")
-    except:
-        net = "<i>Unknown launch date and time </i>"
-
-    # Launch window start
-    # REVIEW: Check the TZ works properly
-    try:
-        win_start = datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ").astimezone(userTZ[0]).strftime("%Y %m %d - %H:%M:%S")
-    except:
-        win_start = "<i>Unknown window open date and time </i>"
-
-    # Launch window end
-    # REVIEW: Check the TZ works properly
-    try:
-        win_end = datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ").astimezone(userTZ[0]).strftime("%Y %m %d - %H:%M:%S")
-    except:
-        win_end = "<i>Unknown window close date and time </i>"
-
-    # Mission description
-    try:
-        mission_desc = results["mission"]["description"]
-    except:
-        mission_desc = "<i>Unknown description</i>"
-
-    # Abbreviation of mission orbit
-    try:
-        mission_orbit = results["mission"]["orbit"]["abbrev"]
-    except:
-        mission_orbit = "<i>Unknown orbit</i>"
-
-    # Mission type
-    try:
-        mission_type = results["mission"]["type"]
-    except:
-        mission_type = "<i>Unknown mission type</i>"
-
-    # Launch location
-    try:
-        location = results["pad"]["location"]["name"]
-    except:
-        location = "<i>Unknown location</i>"
-
-    # Launch pad
-    try:
-        pad = results["pad"]["name"]
-    except:
-        pad = "<i>Unknown launch pad</i>"
-
-    # Message for the user
-    next_msg = "<b>" + name + "</b>\n\n" +\
-        "NET: " + net + "\n" +\
-        "Wind.Open: " + win_start + "\n" +\
-        "Wind.Close: " + win_end + "\n\n" +\
-        mission_desc + "\n\n" +\
-        mission_orbit + " - " + mission_type + "\n" +\
-        pad + " - " + location
+    next_msg, photo = next_Command(userTZ)
     
-    # URL of the streaming
-    try:
-        next_msg += "\n" + results["vidURLs"][0]["url"]
-    except:
-        pass
-    
-    # Infographic if there is one, otherwise, the image of the rocket
-    try:
+    if photo is None:
+        # Message with photo or infographic
         update.message.reply_photo(
-            results["infographic"],
+            photo,
             caption = next_msg,
             parse_mode = ParseMode.HTML
         )
-    except:
-        try:
-            # Message with the available photo and the caption
-            photo = results["image"]
-            update.message.reply_photo(
-                photo,
-                caption = next_msg,
-                parse_mode = ParseMode.HTML
-            )
-        except:
-            # Message without photo since it is not available
-            update.message.reply_text(
-                text = next_msg,
-                parse_mode=ParseMode.HTML
-            )
+    else:
+        # Message without photo since it is not available
+        update.message.reply_text(
+            text = next_msg,
+            parse_mode = ParseMode.HTML
+        )
 
 
 def unknown_Command(update, context):

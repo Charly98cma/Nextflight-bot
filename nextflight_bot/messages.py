@@ -16,6 +16,10 @@ location_msg = "But first, send me <b>your location</b> please, it's only used t
     "Use <b>/skip</b> if you dont want to give me your location."
 
 
+# Message when the timezone is set
+timezone_msg = "Timezone set to: "
+
+
 # Message if user doesnt give location
 skip_location_msg = "Okey, dates and times will be <b>UTC</b> from now on."
 
