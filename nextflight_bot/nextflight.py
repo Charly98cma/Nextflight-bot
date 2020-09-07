@@ -3,17 +3,17 @@
 # Telegram libraries
 from telegram import Update, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
-
 # Useful libraries
 import logging
 import os
 import sys
-
+# Package to manage timezones
+import pytz
 # Timezonefinder (coordinates --> TZ)
 from timezonefinder import TimezoneFinder
-
 # Messages and texts send to the user
 import messages as msgs
+# Code of /nextflight
 from flight_info import next_Command
 
 # Useful for debuging
@@ -21,9 +21,6 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Basic URL of Launch Library API
-URL = "https://ll.thespacedevs.com/2.0.0"
 
 # Timezonefinder object
 tf = TimezoneFinder()
