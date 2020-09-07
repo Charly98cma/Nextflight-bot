@@ -30,6 +30,10 @@ LOCATION = range(1)
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC', pytz.utc]
 
+# Flag for location already set 
+locFlag = False
+
+
 def start_Command(update, context):
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
     update.message.reply_text(
@@ -44,7 +48,11 @@ def start_Command(update, context):
 
 
 def location(update, context):
+    global locFlag
+    locFlag = True
+    
     location = update.message.location
+
     userTZ[0] = tf.timezone_at(
         lng = location["longitude"],
         lat = location["latitude"]
@@ -52,7 +60,6 @@ def location(update, context):
     userTZ[1] = pytz.timezone(
         userTZ[0]
     )
-    locFlag = True
     update.message.reply_text(
         text = msgs.timezone_msg + userTZ[0],
         parse_mode = ParseMode.HTML
@@ -61,6 +68,7 @@ def location(update, context):
 
 
 def skip_location(update, context):
+    global locFlag
     if locFlag:
         pass
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
@@ -143,10 +151,6 @@ def main():
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
     dp.add_handler(CommandHandler('cancel', cancel_Command))
     dp.add_handler(MessageHandler(Filters.command, unknown_Command))
-
-    # Flag for location already set 
-    locFlag = False
-
     
     # Starts the bot
     updater.start_polling(clean = True)

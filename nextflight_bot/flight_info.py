@@ -31,14 +31,12 @@ def next_Command(userTZ):
     name = results["name"]
 
     # Estimated launch date and time
-    # REVIEW: Check the TZ works properly
     try:
         net = pytz.utc.localize(datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ")).astimezone(userTZ[1]).strftime("%Y/%m/%d - %H:%M:%S")
     except:
         net = "<i>Unknown launch date and time </i>"
 
     # Launch window start
-    # REVIEW: Check the TZ works properly
     try:
         win_start = pytz.utc.localize(datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ")).astimezone(userTZ[1]).strftime("%Y/%m/%d - %H:%M:%S")
     except:
