@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Telegram libraries
-from telegram import Update, ParseMode
+from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 # Useful libraries
 import logging
@@ -15,44 +15,38 @@ from timezonefinder import TimezoneFinder
 import messages as msgs
 # Code of /nextflight
 from flight_info import next_Command
+# Code for sending the message to the user
+import msg_management as msgMng
+
 
 # Useful for debuging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
+    level=logging.INFO
+)
 logger = logging.getLogger(__name__)
-
-# Timezonefinder object
-tf = TimezoneFinder()
 
 LOCATION = range(1)
 
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC', pytz.utc]
-
 # Flag for location already set 
 locFlag = False
+# Timezonefinder object
+tf = TimezoneFinder()
 
 
 def start_Command(update, context):
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
-    update.message.reply_text(
-        text = msgs.welcome_msg,
-        parse_mode = ParseMode.HTML
-    )
-    update.message.reply_text(
-        text = msgs.location_msg,
-        parse_mode = ParseMode.HTML
-    )
+    msgMng.send_txtMsg(update, msgs.welcome_msg)
+    msgMng.send_txtMsg(update, msgs.location_msg)
     return LOCATION
 
 
 def location(update, context):
     global locFlag
-    locFlag = True
-    
+    locFlag = True    
     location = update.message.location
-
     userTZ[0] = tf.timezone_at(
         lng = location["longitude"],
         lat = location["latitude"]
@@ -60,10 +54,7 @@ def location(update, context):
     userTZ[1] = pytz.timezone(
         userTZ[0]
     )
-    update.message.reply_text(
-        text = msgs.timezone_msg + userTZ[0],
-        parse_mode = ParseMode.HTML
-    )
+    msgMng.send_txtMsg(update, msgs.timezone_msg + userTZ[0])
     logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, userTZ[0]))
 
 
@@ -72,53 +63,34 @@ def skip_location(update, context):
     if locFlag:
         pass
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
-    update.message.reply_text(
-        text = msgs.skip_location_msg,
-        parse_mode = ParseMode.HTML
-    )
+    msgMng.send_txtMsg(update, msgs.skip_location_msg)
     locFlag = True
 
 
 def help_Command(update, context):
     logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
-    update.message.reply_text(
-        msgs.commands_msg,
-        parse_mode = ParseMode.HTML
-    )
+    msgMng.send_txtMsg(update, msgs.commands_msg)
 
 
 def nextflight_Command(update, context):
     logger.info('User {} request next space flight info'.format(update.message.from_user.first_name))
-
     next_msg, photo = next_Command(userTZ)
-    
     if photo is not None:
         # Message with photo or infographic
-        update.message.reply_photo(
-            photo,
-            caption = next_msg,
-            parse_mode = ParseMode.HTML
-        )
+        msgMng.send_photoMsg(update, next_msg, photo)
     else:
         # Message without photo since it is not available
-        update.message.reply_text(
-            text = next_msg,
-            parse_mode = ParseMode.HTML
-        )
+        msgMng.send_txtMsg(update, next_msg)
 
 
 def unknown_Command(update, context):
     logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
-    update.message.reply_text(
-        text = msgs.unknown_msg
-    )
+    msgMng.send_txtMsg(update, msgs.unknown_msg)
 
 
 def cancel_Command(update, context):
     logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
-    update.message.reply_text(
-        text = msgs.cancel_msg
-    )
+    msgMng.send_txtMsg(update, msgs.cancel_msg)
     return ConversationHandler.END
 
 
