@@ -9,7 +9,7 @@ This is a pretty basic bot with the following commands:
 - **/start** - Starts the conversation with the bot and this one ask for your location (only used to give dates and times according to your timezone)
 - **/help**  - Gives the list of commands and a brief explanation
 - **/nextflight** - Answers with the info of the next space flight (name, dates, description, location, etc..) and photo of the rocket or the infographic if it's available.
-- **/cancel** - End the conversation with the bot
+- ~~**/cancel** - End the conversation with the bot~~ --> Not working at the moment due to a bug
 
 The very basics are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...) and more ideas I have in mind (dates and times on user TZ, translation of texts and messages, etc...)
 
@@ -62,8 +62,9 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [X] Move messages out of the main code
 - [x] Add GPL License
 - [x] Restructure the project to make it "professional" (unload the only .py file)
-- [ ] Deploy bot on VPS
-- [ ] Fix installation process (dependencies)
+- [x] Deploy bot on VPS
+- [x] Fix installation process (dependencies)
+- [ ] Fix **/cancel** bug (doesn't let restart the conversation)
 - [ ] Translate texts to user language
 - [ ] **Release second stable version**
 - [ ] Reminder 30 mins before launch.

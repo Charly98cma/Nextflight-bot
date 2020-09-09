@@ -88,10 +88,10 @@ def unknown_Command(update, context):
     msgMng.send_txtMsg(update, msgs.unknown_msg)
 
 
-def cancel_Command(update, context):
-    logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
-    msgMng.send_txtMsg(update, msgs.cancel_msg)
-    return ConversationHandler.END
+# def cancel_Command(update, context):
+#     logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
+#     msgMng.send_txtMsg(update, msgs.cancel_msg)
+#     return ConversationHandler.END
 
 
 def main():
@@ -121,7 +121,7 @@ def main():
 
     dp.add_handler(CommandHandler('help', help_Command))
     dp.add_handler(CommandHandler('nextflight', nextflight_Command))
-    dp.add_handler(CommandHandler('cancel', cancel_Command))
+    # dp.add_handler(CommandHandler('cancel', cancel_Command))
     dp.add_handler(MessageHandler(Filters.command, unknown_Command))
     
     # Starts the bot
