@@ -60,6 +60,8 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [X] Move messages out of the main code
 - [x] Add GPL License
 - [x] Restructure the project to make it "professional" (unload the only .py file)
+- [ ] Deploy bot on VPS
+- [ ] Fix installation process (dependencies)
 - [ ] Translate texts to user language
 - [ ] **Release second stable version**
 - [ ] Reminder 30 mins before launch.
