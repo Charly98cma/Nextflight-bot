@@ -15,9 +15,10 @@ def next_Command(userTZ):
         "offset" : 0,
         "mode" : "detailed"
     }
+
     # Loop to search the next launch because the API returns the most recent launch even if it has already happend
     while True:
-        # mode can be "normal", "list", "detailed"
+        # Mode can be "normal", "list", "detailed"
         results = requests.get(
             URL,
             params=parameters
@@ -32,20 +33,19 @@ def next_Command(userTZ):
 
     # Estimated launch date and time
     try:
-        net = pytz.utc.localize(datetime.strptime(results["net"], "%Y-%m-%dT%H:%M:%SZ")).astimezone(userTZ[1]).strftime("%Y/%m/%d - %H:%M:%S")
+        net = request_time_of(results, "net", userTZ)
     except:
         net = "<i>Unknown launch date and time </i>"
 
     # Launch window start
     try:
-        win_start = pytz.utc.localize(datetime.strptime(results["window_start"], "%Y-%m-%dT%H:%M:%SZ")).astimezone(userTZ[1]).strftime("%Y/%m/%d - %H:%M:%S")
+        win_start = request_time_of(results, "window_start", userTZ)
     except:
         win_start = "<i>Unknown window open date and time </i>"
 
     # Launch window end
-    # REVIEW: Check the TZ works properly
     try:
-        win_end = pytz.utc.localize(datetime.strptime(results["window_end"], "%Y-%m-%dT%H:%M:%SZ")).astimezone(userTZ[1]).strftime("%Y/%m/%d - %H:%M:%S")
+        win_end = request_time_of(results, "window_end", userTZ)
     except:
         win_end = "<i>Unknown window close date and time </i>"
 
@@ -95,13 +95,25 @@ def next_Command(userTZ):
         pass
 
     # Infographic, image or no image at all
-    photo = None
     try:
         photo = results["infographic"]
     except:
         try:
             photo = results["image"]
         except:
-            pass
+            photo = None
 
     return next_msg, photo
+
+
+def request_time_of(results, field, userTZ):
+    return pytz.utc.localize(
+        datetime.strptime(
+            results[field],
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
+    ).astimezone(
+        userTZ[1]
+    ).strftime(
+        "%Y/%m/%d - %H:%M:%S"
+    )
