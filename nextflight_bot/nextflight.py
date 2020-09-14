@@ -56,6 +56,7 @@ def location(update, context):
     )
     msgMng.send_txtMsg(update, msgs.timezone_msg + userTZ[0])
     logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, userTZ[0]))
+    return LOOP
 
 
 def skip_location(update, context):
@@ -65,11 +66,13 @@ def skip_location(update, context):
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.skip_location_msg)
     locFlag = True
+    return LOOP
 
 
 def help_Command(update, context):
     logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.commands_msg)
+    return LOOP
 
 
 def nextflight_Command(update, context):
@@ -81,17 +84,19 @@ def nextflight_Command(update, context):
     else:
         # Message without photo since it is not available
         msgMng.send_txtMsg(update, next_msg)
+    return LOOP
 
 
 def unknown_Command(update, context):
     logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
     msgMng.send_txtMsg(update, msgs.unknown_msg)
+    return LOOP
 
 
-# def cancel_Command(update, context):
-#     logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
-#     msgMng.send_txtMsg(update, msgs.cancel_msg)
-#     return ConversationHandler.END
+def cancel_Command(update, context):
+    logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
+    msgMng.send_txtMsg(update, msgs.cancel_msg)
+    return ConversationHandler.END
 
 
 def main():
@@ -111,19 +116,24 @@ def main():
         entry_points = [CommandHandler('start', start_Command)],
         
         states = {
-            LOCATION : [MessageHandler(Filters.location, location)]
+            LOCATION : [
+                MessageHandler(Filters.location, location),
+                CommandHandler('skip', skip_location)
+            ],
+            LOOP : [
+                CommandHandler('help', help_Command),
+                CommandHandler('nextflight', nextflight_Command),
+                MessageHandler(Filters.command, unknown_Command)
+            ]
         },
         
-        fallbacks = [CommandHandler('skip', skip_location)]
+        fallbacks = [
+            CommandHandler('cancel', cancel_Command)
+        ]
     )
 
     dp.add_handler(conv_handler)
 
-    dp.add_handler(CommandHandler('help', help_Command))
-    dp.add_handler(CommandHandler('nextflight', nextflight_Command))
-    # dp.add_handler(CommandHandler('cancel', cancel_Command))
-    dp.add_handler(MessageHandler(Filters.command, unknown_Command))
-    
     # Starts the bot
     updater.start_polling(clean = True)
     updater.idle()
