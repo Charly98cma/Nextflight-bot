@@ -26,7 +26,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-LOCATION = range(1)
+LOCATION, LOOP = range(2)
 
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC', pytz.utc]
