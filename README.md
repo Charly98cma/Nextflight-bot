@@ -11,6 +11,8 @@ This is a pretty basic bot with the following commands:
 - **/nextflight** - Answers with the info of the next space flight (name, dates, description, location, etc..) and photo of the rocket or the infographic if it's available.
 - **/cancel** - End the conversation with the bot
 
+The bot lets you restart the conversation at any point, if you want to change the timezone.
+
 The very basics are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...) and more ideas I have in mind (dates and times on user TZ, translation of texts and messages, etc...)
 
 See the [TODO](https://github.com/Charly98cma/Nextflight-bot#todo) section to see the roadmap of this project, which keeps expanding almost every week.
@@ -65,7 +67,6 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Deploy bot on VPS
 - [x] Fix installation process (dependencies)
 - [x] Fix **/cancel** bug (doesn't let restart the conversation)
-- [ ] Translate texts to user language
 - [ ] Reminder 30 mins before launch.
 - [ ] Make a docker image
 - [ ] **Release second stable version**

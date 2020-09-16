@@ -95,13 +95,9 @@ def next_Command(userTZ):
         pass
 
     # Infographic, image or no image at all
-    try:
-        photo = results["infographic"]
-    except:
-        try:
-            photo = results["image"]
-        except:
-            photo = None
+    photo = results["infographic"]
+    if photo is None:
+        photo = results["image"]
 
     return next_msg, photo
 
