@@ -88,6 +88,7 @@ def unknown_Command(update, context):
 
 
 def cancel_Command(update, context):
+    """Cancel command to end the conversation with the bot."""
     logger.info('User {} ended conversation'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.cancel_msg)
     return ConversationHandler.END
@@ -99,11 +100,10 @@ def error(update, context):
 
 
 def main():
-
     if 'NF_TOKEN' not in os.environ:
         print("Environment variable 'NF_TOKEN' not defined.", file=sys.stderr)
         exit(1)
-    
+
     # FIXME: "use_context=True" should be removed once python-telegram-bot v13 is released on pip
     updater = Updater(
         token = os.environ.get('NF_TOKEN'),
@@ -115,7 +115,6 @@ def main():
     # Handlers
     conv_handler = ConversationHandler(
         entry_points = [CommandHandler('start', start_Command)],
-        
         states = {
             LOCATION : [
                 MessageHandler(Filters.location, location),
@@ -124,10 +123,10 @@ def main():
             LOOP : [
                 CommandHandler('help', help_Command),
                 CommandHandler('nextflight', nextflight_Command),
+                CommandHandler('cancel', cancel_Command),
                 MessageHandler(Filters.command, unknown_Command)
             ]
         },
-        
         fallbacks = [
             CommandHandler('cancel', cancel_Command)
         ],
