@@ -35,6 +35,7 @@ tf = TimezoneFinder()
 
 
 def start_Command(update, context):
+    """Start command explaining what can do this bot and asking for user location."""
     logger.info('User {} starts a new conversation'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.welcome_msg)
     msgMng.send_txtMsg(update, msgs.location_msg)
@@ -42,6 +43,7 @@ def start_Command(update, context):
 
 
 def location(update, context):
+    """User shared location, and is used to 'calculate' its TZ."""
     tz = tf.timezone_at(
         lng = update.message.location["longitude"],
         lat = update.message.location["latitude"]
@@ -53,33 +55,33 @@ def location(update, context):
 
 
 def skip_location(update, context):
-    global locFlag
-    if locFlag:
-        pass
+    """User doesn't want to share location, so UTC will be used."""
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.skip_location_msg)
     return LOOP
 
 
 def help_Command(update, context):
+    """User asked for the list of commands."""
     logger.info('User {} request the list of commands'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.commands_msg)
     return LOOP
 
 
 def nextflight_Command(update, context):
+    """User asked for information about the space flight."""
     logger.info('User {} request next space flight info'.format(update.message.from_user.first_name))
     next_msg, photo = next_Command(userTZ)
+    """Based on the photo/infographic availability, the text does or doesn't include the photo"""
     if photo is not None:
-        # Message with photo or infographic
         msgMng.send_photoMsg(update, next_msg, photo)
     else:
-        # Message without photo since it is not available
         msgMng.send_txtMsg(update, next_msg)
     return LOOP
 
 
 def unknown_Command(update, context):
+    """User introduced an unknown command."""
     logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
     msgMng.send_txtMsg(update, msgs.unknown_msg)
     return LOOP
