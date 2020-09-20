@@ -108,8 +108,4 @@ def request_time_of(results, field, userTZ):
             results[field],
             "%Y-%m-%dT%H:%M:%SZ"
         )
-    ).astimezone(
-        userTZ[1]
-    ).strftime(
-        "%Y/%m/%d - %H:%M:%S"
-    )
+    ).astimezone(userTZ[0]).strftime("%Y/%m/%d - %H:%M:%S")

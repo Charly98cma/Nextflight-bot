@@ -29,9 +29,7 @@ logger = logging.getLogger(__name__)
 LOCATION, LOOP = range(2)
 
 # List to save the TZ of the user (UTC by default)
-userTZ = ['UTC', pytz.utc]
-# Flag for location already set 
-locFlag = False
+userTZ = [pytz.utc]
 # Timezonefinder object
 tf = TimezoneFinder()
 
@@ -44,18 +42,13 @@ def start_Command(update, context):
 
 
 def location(update, context):
-    global locFlag
-    locFlag = True    
-    location = update.message.location
-    userTZ[0] = tf.timezone_at(
-        lng = location["longitude"],
-        lat = location["latitude"]
+    tz = tf.timezone_at(
+        lng = update.message.location["longitude"],
+        lat = update.message.location["latitude"]
     )
-    userTZ[1] = pytz.timezone(
-        userTZ[0]
-    )
-    msgMng.send_txtMsg(update, msgs.timezone_msg + userTZ[0])
-    logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, userTZ[0]))
+    msgMng.send_txtMsg(update, msgs.timezone_msg + tz)
+    logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, tz))
+    userTZ[0] = pytz.timezone(tz)
     return LOOP
 
 
@@ -65,7 +58,6 @@ def skip_location(update, context):
         pass
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.skip_location_msg)
-    locFlag = True
     return LOOP
 
 
