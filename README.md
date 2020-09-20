@@ -30,7 +30,8 @@ If you don't know how to do it, [this](https://www.makeuseof.com/tag/install-pip
 This bot uses a couple of packages which are available on *pip*, see [requirements.txt](https://github.com/Charly98cma/Nextflight-bot/blob/master/requirements.txt) to see all of them.
 
 The installation process of all the required packages has been changed to even more simple commands using the next command:
-```
+
+```makefile
 make init
 ```
 
@@ -38,7 +39,7 @@ And... you're almost ready to take off :P
 
 To run the bot, just execute:
 
-```
+```makefile
 make run
 ```
 
@@ -46,7 +47,11 @@ make run
 
 To create yout bot, you must talk to the BotFather, which will guide you through the basics of setting up your bot, and will give you the token.
 
-Once everything is set up, create a new environment variable called *NF_TOKEN* with your token, and execute the bot.
+Once everything is set up, you have to create a new environment variable called *NF_TOKEN* with your token, which can be done executing the next command:
+
+``` makefile
+make token
+```
 
 ## Acknowledgements
 
