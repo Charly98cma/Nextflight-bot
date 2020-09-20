@@ -30,8 +30,6 @@ LOCATION, LOOP = range(2)
 
 # List to save the TZ of the user (UTC by default)
 userTZ = ['UTC', pytz.utc]
-# Flag for location already set 
-locFlag = False
 # Timezonefinder object
 tf = TimezoneFinder()
 
@@ -44,25 +42,17 @@ def start_Command(update, context):
 
 
 def location(update, context):
-    global locFlag
-    locFlag = True    
-    location = update.message.location
     userTZ[0] = tf.timezone_at(
-        lng = location["longitude"],
-        lat = location["latitude"]
+        lng = update.message.location["longitude"],
+        lat = update.message.location["latitude"]
     )
-    userTZ[1] = pytz.timezone(
-        userTZ[0]
-    )
+    userTZ[1] = pytz.timezone(userTZ[0])
     msgMng.send_txtMsg(update, msgs.timezone_msg + userTZ[0])
     logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, userTZ[0]))
     return LOOP
 
 
 def skip_location(update, context):
-    global locFlag
-    if locFlag:
-        pass
     logger.info('User {} didn\'t shared location'.format(update.message.from_user.first_name))
     msgMng.send_txtMsg(update, msgs.skip_location_msg)
     locFlag = True
@@ -109,7 +99,7 @@ def main():
     if 'NF_TOKEN' not in os.environ:
         print("Environment variable 'NF_TOKEN' not defined.", file=sys.stderr)
         exit(1)
-    
+
     # FIXME: "use_context=True" should be removed once python-telegram-bot v13 is released on pip
     updater = Updater(
         token = os.environ.get('NF_TOKEN'),
@@ -121,7 +111,7 @@ def main():
     # Handlers
     conv_handler = ConversationHandler(
         entry_points = [CommandHandler('start', start_Command)],
-        
+
         states = {
             LOCATION : [
                 MessageHandler(Filters.location, location),
@@ -133,7 +123,7 @@ def main():
                 MessageHandler(Filters.command, unknown_Command)
             ]
         },
-        
+
         fallbacks = [
             CommandHandler('cancel', cancel_Command)
         ],
