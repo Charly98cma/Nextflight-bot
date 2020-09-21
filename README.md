@@ -72,8 +72,7 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Deploy bot on VPS
 - [x] Fix installation process (dependencies)
 - [x] Fix **/cancel** bug (doesn't let restart the conversation)
-- [ ] Reminder 30 mins before launch.
-- [ ] Make a docker image
-- [ ] **Release second stable version**
-- [ ] ...
 - [ ] Events (dock/undock of capsules, EVAs, etc...)
+- [ ] Test everything for bugs
+- [ ] Make a docker image
+- [ ] **Release final stable version (2.0)**
