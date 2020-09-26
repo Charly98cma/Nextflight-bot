@@ -15,6 +15,8 @@ from timezonefinder import TimezoneFinder
 import messages as msgs
 # Code of /nextflight
 from flight_info import next_Command
+# Code of /nextevent
+from event_indo import event_Command
 # Code for sending the message to the user
 import msg_management as msgMng
 
@@ -80,6 +82,13 @@ def nextflight_Command(update, context):
     return LOOP
 
 
+def nextevent_Command(update, context):
+    """User asked for information about the next event"""
+    logger.info('User {} request info of next event'.format(update.message.from_user.first_name))
+    next_msg = event_Command(userTZ)
+    msgMng.send_txtMsg(update, next_msg)
+
+
 def unknown_Command(update, context):
     """User introduced an unknown command."""
     logger.info('User {} send an unknown command {}'.format(update.message.from_user.first_name, update.message.text))
@@ -123,6 +132,7 @@ def main():
             LOOP : [
                 CommandHandler('help', help_Command),
                 CommandHandler('nextflight', nextflight_Command),
+                ComamndHandler('nextevent', nextevent_Command),
                 CommandHandler('cancel', cancel_Command),
                 MessageHandler(Filters.command, unknown_Command)
             ]
