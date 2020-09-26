@@ -1,83 +1,33 @@
 # Package to make HTTP requests (Launch Library 2 API)
 import requests
-# Date and time management package
-from datetime import datetime
-# Package to manage timezones
-import pytz
+# Value management
+from value_management import *
 
 # Basic URL of Launch Library API
 URL = "https://ll.thespacedevs.com/2.0.0/launch/upcoming/"
 
+
 def next_Command(userTZ):
-    # API request to retrieve the next space flight
-    parameters = {
-        "limit" : 1,
-        "offset" : 0,
-        "mode" : "detailed"
-    }
-
     # Loop to search the next launch because the API returns the most recent launch even if it has already happend
-    while True:
-        # Mode can be "normal", "list", "detailed"
-        results = requests.get(
-            URL,
-            params=parameters
-        ).json()["results"][0]
-
-        if (results["status"]["name"] not in ["Success", "Failed"]):
-            break
-        parameters["offset"] += 1
-
+    results = getResult()
     # Name of rocket and payload
     name = results["name"]
-
     # Estimated launch date and time
-    try:
-        net = request_time_of(results, "net", userTZ)
-    except:
-        net = "<i>Unknown launch date and time </i>"
-
+    net = getValueTimes(results, "net", userTZ)
     # Launch window start
-    try:
-        win_start = request_time_of(results, "window_start", userTZ)
-    except:
-        win_start = "<i>Unknown window open date and time </i>"
-
+    win_start = getValueTimes(results, "window_start", userTZ)
     # Launch window end
-    try:
-        win_end = request_time_of(results, "window_end", userTZ)
-    except:
-        win_end = "<i>Unknown window close date and time </i>"
-
+    win_end = getValueTimes(results, "window_end", userTZ)
     # Mission description
-    try:
-        mission_desc = results["mission"]["description"]
-    except:
-        mission_desc = "<i>Unknown description</i>"
-
+    mission_desc = getValue(results["mission"], "description")
     # Abbreviation of mission orbit
-    try:
-        mission_orbit = results["mission"]["orbit"]["abbrev"]
-    except:
-        mission_orbit = "<i>Unknown orbit</i>"
-
+    mission_orbit = getValue(results["mission"]["orbit"], "abbrev")
     # Mission type
-    try:
-        mission_type = results["mission"]["type"]
-    except:
-        mission_type = "<i>Unknown mission type</i>"
-
+    mission_type = getValue(results["mission"], "type")
     # Launch location
-    try:
-        location = results["pad"]["location"]["name"]
-    except:
-        location = "<i>Unknown location</i>"
-
+    location = getValue(results["pad"]["location"], "name")
     # Launch pad
-    try:
-        pad = results["pad"]["name"]
-    except:
-        pad = "<i>Unknown launch pad</i>"
+    pad = getValue(results["pad"], "name")
 
     # Message for the user
     next_msg = "<b>" + name + "</b>\n\n" +\
@@ -90,7 +40,7 @@ def next_Command(userTZ):
 
     # URL of the streaming
     try:
-        next_msg += "\n" + results["vidURLs"][0]["url"]
+        next_msg += "\n\n<a href=\"" + results["vidURLs"][0]["url"] + "\">Stream</a>"
     except:
         pass
 
@@ -98,14 +48,23 @@ def next_Command(userTZ):
     photo = results["infographic"]
     if photo is None:
         photo = results["image"]
-
     return next_msg, photo
 
 
-def request_time_of(results, field, userTZ):
-    return pytz.utc.localize(
-        datetime.strptime(
-            results[field],
-            "%Y-%m-%dT%H:%M:%SZ"
-        )
-    ).astimezone(userTZ[0]).strftime("%Y/%m/%d - %H:%M:%S")
+# API request to retrieve the next space flight
+def getResult():
+    # Mode can be "normal", "list" or "detailed"
+    parameters = {
+        "limit" : 1,
+        "offset" : 0,
+        "mode" : "detailed",
+    }
+    while True:
+        results = requests.get(
+            URL,
+            params=parameters
+        ).json()["results"][0]
+        if (results["status"]["name"] not in ["Success", "Failed"]):
+            break
+        parameters["offset"] += 1
+    return results

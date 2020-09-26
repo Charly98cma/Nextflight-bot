@@ -5,4 +5,4 @@ token:
 run:
 	python3 nextflight_bot/nextflight.py
 
-.PHONY: init, run
+.PHONY: token, init, run
