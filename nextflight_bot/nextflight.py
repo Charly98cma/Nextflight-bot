@@ -132,7 +132,7 @@ def main():
             LOOP : [
                 CommandHandler('help', help_Command),
                 CommandHandler('nextflight', nextflight_Command),
-                ComamndHandler('nextevent', nextevent_Command),
+                CommandHandler('nextevent', nextevent_Command),
                 CommandHandler('cancel', cancel_Command),
                 MessageHandler(Filters.command, unknown_Command)
             ]
