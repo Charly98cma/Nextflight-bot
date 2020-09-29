@@ -16,7 +16,7 @@ import messages as msgs
 # Code of /nextflight
 from flight_info import next_Command
 # Code of /nextevent
-from event_indo import event_Command
+from event_info import event_Command
 # Code for sending the message to the user
 import msg_management as msgMng
 
