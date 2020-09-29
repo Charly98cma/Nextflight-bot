@@ -18,15 +18,15 @@ def event_Command(userTZ):
     # Name of the event
     name = results["name"]
     # Date of the event on the user TZ
-    date = getValueTimes(results, "date")
+    date = getValueTimes(results, "date", userTZ)
     # Description of the event
     description = getValue(results, "description")
     # Location of the event (building, space center, etc...)
     location = getValue(results, "location")
     # URL of the article describing the event
-    newsURL = getValue(results, "news_irl")
+    newsURL = getValue(results, "news_url")
 
-    net_msg = "<b>" + name + "</b>\n\n" +\
+    next_msg = "<b>" + name + "</b>\n\n" +\
         "Date: " + date + "\n\n" +\
         description + "\n\n" +\
         location + "\n" +\
