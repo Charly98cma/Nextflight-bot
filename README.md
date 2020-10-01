@@ -73,6 +73,6 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Fix installation process (dependencies)
 - [x] Fix **/cancel** bug (doesn't let restart the conversation)
 - [x] Events (dock/undock of capsules, EVAs, etc...)
-- [ ] Fix `make token` that doesn't read the `token.txt` file
+- [x] Fix `make token` that doesn't read the `token.txt` file
 - [ ] Make a docker image for easy deployment
 - [ ] **Release second stable version**
