@@ -23,18 +23,21 @@ def event_Command(userTZ):
     description = getValue(results, "description")
     # Location of the event (building, space center, etc...)
     location = getValue(results, "location")
-    # URL of the article describing the event
-    newsURL = getValue(results, "news_url")
 
     next_msg = "<b>" + name + "</b>\n\n" +\
         "Date: " + date + "\n\n" +\
         description + "\n\n" +\
-        location + "\n" +\
-        "<a href=" + newsURL + ">" + "Press release</a>"
+        location
+
+    # URL of the article describing the event
+    try:
+        next_msg += "\n<a href=\"" + getValue(results, "news_url") + "\">Press release</a>"
+    except:
+        pass
 
     # URL in which the event will be hosted
     try:
-        next_msg += getValue(results, "video_url")
+        next_msg += "\n\n<a href=\"" + getValue(results, "video_url") + "\">Youtube Stream</a>"
     except:
         pass
 
