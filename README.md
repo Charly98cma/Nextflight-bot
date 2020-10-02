@@ -23,7 +23,25 @@ Hope you like it and it's helpful to someone else  ;)
 If you want to give it a taste, once it's hosted, he's waiting you [here](https://t.me/nextflight_bot).
 
 ## Dependencies and execution
+### Docker installation
 
+There's a [Dockerfile](https://github.com/Charly98cma/Nextflight-bot/blob/master/Dockerfile) that will deploy the bot and all its dependencies on a container, making it easier to deploy and manage.
+
+First of all, you'll need a token, see [Credentials](#credentials) for more information.
+
+Now, you must create the docker image:
+``` shell
+docker build --tag nextflight-bot .
+```
+
+Now, you only have to run the image:
+``` shell
+docker run --detach --name nextflight-bot nextflight-bot:latest
+```
+
+And that's all! Very easy and very fast!
+
+### Manual installation
 First of all, make sure your system has already installed *Python 3* (please, stop using *Python 2* :smile: ) and *pip*.
 
 If you don't know how to do it, [this](https://www.makeuseof.com/tag/install-pip-for-python/) article contains the commands to install it *Python 3* and *pip* on Windows, MAC, Linux (commands for each package manager) and Raspberry Pi.
