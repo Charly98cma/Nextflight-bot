@@ -9,13 +9,14 @@ This is a pretty basic bot with the following commands:
 - **/start** - Starts the conversation with the bot and this one ask for your location (only used to give dates and times according to your timezone)
 - **/help**  - Gives the list of commands and a brief explanation
 - **/nextflight** - Answers with the info of the next space flight (name, dates, description, location, etc..) and photo of the rocket or the infographic if it's available.
+- **/nextevent** - Shows information about the next space related event (EVAs, Dock/Undock of capsules on the ISS, Press releases, etc...)
 - **/cancel** - End the conversation with the bot
 
-The bot lets you restart the conversation at any point, if you want to change the timezone.
+The bot lets you restart the conversation at any point if you want to change the timezone.
 
 The very basics are mostly done, but I want to implement **Events** too (ISS dock/undock of capsules, EVA, etc...) and more ideas I have in mind (dates and times on user TZ, translation of texts and messages, etc...)
 
-See the [TODO](https://github.com/Charly98cma/Nextflight-bot#todo) section to see the roadmap of this project, which keeps expanding almost every week.
+See the [TODO](https://github.com/Charly98cma/Nextflight-bot#todo) section to see the roadmap of this project and it's current state.
 
 Hope you like it and it's helpful to someone else  ;)
 
@@ -72,7 +73,7 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Deploy bot on VPS
 - [x] Fix installation process (dependencies)
 - [x] Fix **/cancel** bug (doesn't let restart the conversation)
-- [ ] Events (dock/undock of capsules, EVAs, etc...)
-- [ ] Test everything for bugs
-- [ ] Make a docker image
-- [ ] **Release final stable version (2.0)**
+- [x] Events (dock/undock of capsules, EVAs, etc...)
+- [x] Fix `make token` that doesn't read the `token.txt` file
+- [x] Make a docker image for easy deployment
+- [ ] **Release second stable version**
