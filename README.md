@@ -9,6 +9,7 @@ This is a pretty basic bot with the following commands:
 - **/start** - Starts the conversation with the bot and this one ask for your location (only used to give dates and times according to your timezone)
 - **/help**  - Gives the list of commands and a brief explanation
 - **/nextflight** - Answers with the info of the next space flight (name, dates, description, location, etc..) and photo of the rocket or the infographic if it's available.
+- **/nextevent** - Shows information about the next space related event (EVAs, Dock/Undock of capsules on the ISS, Press releases, etc...)
 - **/cancel** - End the conversation with the bot
 
 The bot lets you restart the conversation at any point if you want to change the timezone.
