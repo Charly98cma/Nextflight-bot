@@ -94,4 +94,4 @@ Thanks to the original developer of [Launch Library](https://launchlibrary.net/)
 - [x] Events (dock/undock of capsules, EVAs, etc...)
 - [x] Fix `make token` that doesn't read the `token.txt` file
 - [x] Make a docker image for easy deployment
-- [ ] **Release second stable version**
+- [X] **Release second stable version**
