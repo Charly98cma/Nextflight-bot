@@ -3,6 +3,7 @@ commands_msg = "<b>Commands to control me:</b>\n" +\
         "/start - Start the conversation with me\n" +\
         "/help - Display the list of commands\n" +\
         "/nextflight - Information about next lauch\n" +\
+        "/nextevent - Information about the next important event" +\
         "/cancel - Ends the conversation"
 
 
