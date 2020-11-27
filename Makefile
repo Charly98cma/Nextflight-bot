@@ -6,4 +6,10 @@ run:
 	export NF_TOKEN=$(shell cat token.txt)
 	python3 nextflight_bot/nextflight.py
 
-.PHONY: init, run
+dockerbuild:
+	docker build --tag nextflight-bot .
+
+dockerrun:
+	docker run --detach --name nextflight-bot nextflight-bot:latest
+
+.PHONY: init, run, dockerbuild, dockerrun
