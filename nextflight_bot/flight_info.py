@@ -64,7 +64,7 @@ def getResult():
             URL,
             params=parameters
         ).json()["results"][0]
-        if (results["status"]["name"] not in ["Success", "Failed"]):
+        if (results["status"]["name"] not in ["Success", "Failed", "Partial Failure"]):
             break
         parameters["offset"] += 1
     return results
