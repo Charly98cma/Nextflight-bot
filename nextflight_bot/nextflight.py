@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 
 # Telegram libraries
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, ConversationHandler
 # Useful libraries
-import logging
-import os
-import sys
+from logging import basicConfig, INFO, getLogger
+from sys import stderr as sys_stderr
 # Package to manage timezones
-import pytz
+from pytz import utc, timezone
 # Timezonefinder (coordinates --> TZ)
 from timezonefinder import TimezoneFinder
+
 # Messages and texts send to the user
 import messages as msgs
 # Code of /nextflight
@@ -22,16 +21,16 @@ import msg_management as msgMng
 
 
 # Useful for debuging
-logging.basicConfig(
+basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    level=INFO
 )
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 LOCATION, LOOP = range(2)
 
 # List to save the TZ of the user (UTC by default)
-userTZ = [pytz.utc]
+userTZ = [utc]
 # Timezonefinder object
 tf = TimezoneFinder()
 
@@ -52,7 +51,7 @@ def location(update, context):
     )
     msgMng.send_txtMsg(update, msgs.timezone_msg + tz)
     logger.info('User {} timezone is {}'.format(update.message.from_user.first_name, tz))
-    userTZ[0] = pytz.timezone(tz)
+    userTZ[0] = timezone(tz)
     return LOOP
 
 
@@ -109,13 +108,16 @@ def error(update, context):
 
 
 def main():
-    if 'NF_TOKEN' not in os.environ:
-        print("Environment variable 'NF_TOKEN' not defined.", file=sys.stderr)
+    try:
+        with open('token.txt', 'r') as f:
+            NF_TOKEN = f.readline().strip()
+    except FileNotFoundError:
+        print("Environment variable 'NF_TOKEN' not defined.", file=sys_stderr)
         exit(1)
 
     # FIXME: "use_context=True" should be removed once python-telegram-bot v13 is released on pip
     updater = Updater(
-        token = os.environ.get('NF_TOKEN'),
+        token = NF_TOKEN,
         use_context = True)
 
     # Dispatcher to register handlers
