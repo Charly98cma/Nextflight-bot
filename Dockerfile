@@ -1,9 +1,14 @@
-FROM python:3.7
+FROM python:3.9-slim-buster
 
-RUN mkdir /nextflight_bot
+# Create directory for the bot
 WORKDIR /nextflight_bot
+
+# Copy and install dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Copy the rest of the bot
 COPY . .
 
-RUN make init
-
-CMD make run
+# Run the bot
+CMD ["python3", "nextflight_bot/nextflight.py"]
